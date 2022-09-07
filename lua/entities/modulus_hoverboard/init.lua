@@ -108,12 +108,15 @@ end
 
 function ENT:SetDriver( pl )
 
-	if ( !IsValid( self.Avatar ) ) then self:CreateAvatar() end
-	self.Avatar:SetPlayer( pl )
-
 	local driver = self:GetDriver()
+	local driverIsValid = IsValid( driver )
 
-	if ( IsValid( driver ) ) then
+	if ( !IsValid( self.Avatar ) ) then
+		self:CreateAvatar()
+		self.Avatar:SetPlayer( driverIsValid and driver or pl )
+	end
+
+	if ( driverIsValid ) then
 
 		if ( !IsValid( pl ) or GetConVarNumber( "sv_hoverboard_cansteal" ) == 1 ) then -- check if we should boot the driver
 
